@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Groupe Chacounette</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+    }
+    header {
+      background: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #444;
+    }
+    nav a {
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      display: block;
+    }
+    nav a:hover {
+      background: #666;
+    }
+    .section {
+      display: none;
+      padding: 20px;
+    }
+    .active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Groupe Chacounette</h1>
+  </header>
+
+  <nav>
+    <a href="#" onclick="showSection('photos')">Photos de Chacounette</a>
+    <a href="#" onclick="showSection('journal')">Journal du Groupe</a>
+    <a href="#" onclick="showSection('actus')">Actualité</a>
+  </nav>
+
+  <div id="photos" class="section active">
+    <h2>Photos de Chacounette</h2>
+    <p>Ici tu pourras ajouter les photos de Chacounette.</p>
+  </div>
+
+  <div id="journal" class="section">
+    <h2>Journal du Groupe Chacounette</h2>
+    <p>Ici tu peux écrire des articles, des nouvelles, des histoires...</p>
+  </div>
+
+  <div id="actus" class="section">
+    <h2>Actualité</h2>
+    <p>Les dernières nouvelles du groupe.</p>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+</body>
+</html>
