@@ -101,5 +101,64 @@
       document.getElementById(id).classList.add('active');
     }
   </script>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Groupe Chacounette</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+    }
+    header {
+      background: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #444;
+    }
+    nav a {
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      display: block;
+    }
+    nav a:hover {
+      background: #666;
+    }
+    .section {
+      display: none;
+      padding: 20px;
+    }
+    .active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+    <div id="login-screen" style="position:fixed; inset:0; background:white; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px;">
+        <h2>Connexion requise</h2>
+        <p>Pour accéder au site, veuillez vous connecter.</p>
+        <a href="LIEN_VERS_VOTRE_GOOGLE_FORM" target="_blank" style="margin-top:20px; padding:10px 20px; background:#007bff; color:white; text-decoration:none; border-radius:5px;">Se connecter</a>
+        <p style="margin-top:20px;">Pas de compte ?</p>
+        <a href="LIEN_VERS_VOTRE_GOOGLE_FORM" target="_blank" style="padding:10px 20px; background:#28a745; color:white; text-decoration:none; border-radius:5px;">Devenir membre</a>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const logged = params.get('logged');
+
+        if (logged === 'true') {
+            document.getElementById('login-screen').style.display = 'none';
+        }
+    </script>
+
 </body>
 </html>
