@@ -4,186 +4,191 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Groupe Chacounette</title>
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f7f7f7; }
-    header { background: #333; color: white; padding: 20px; text-align: center; }
-    nav { display: flex; justify-content: center; background: #444; }
-    nav a { color: white; padding: 14px 20px; text-decoration: none; display: block; }
-    nav a:hover { background: #666; }
-    .section { display: none; padding: 20px; }
-    .active { display: block; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+    }
 
-    #login-container { text-align:center; padding:50px; }
-    #login-container input { padding:10px; margin:5px; width:200px; }
-    #login-container button { padding:10px 20px; margin:10px; cursor:pointer; }
-    #logout-btn { padding:10px 20px; margin:10px; cursor:pointer; }
+    header {
+      background: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
 
-    #confetti { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; }
+    nav {
+      display: none;
+      justify-content: center;
+      background: #444;
+    }
+
+    nav a, nav button {
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    nav a:hover, nav button:hover {
+      background: #666;
+    }
+
+    .section {
+      display: none;
+      padding: 20px;
+    }
+
+    .active {
+      display: block;
+    }
+
+    #login-container {
+      text-align: center;
+      padding: 50px;
+    }
+
+    #login-container input {
+      padding: 10px;
+      margin: 5px;
+      width: 220px;
+    }
+
+    #login-container button {
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+    }
   </style>
 </head>
+
 <body>
-  <header><h1>Groupe Chacounette</h1></header>
 
-  <!-- LOGIN -->
-  <div id="login-container">
-    <h2>Connectez-vous ou créez un compte</h2>
+<header>
+  <h1>Groupe Chacounette</h1>
+</header>
 
-    <input type="email" id="email" placeholder="Email"><br>
-    <input type="password" id="password" placeholder="Mot de passe"><br>
+<!-- CONNEXION / CRÉATION -->
+<div id="login-container">
+  <h2>Connexion</h2>
 
-    <button onclick="login()">Se connecter</button>
-    <button onclick="signup()">Créer un compte</button>
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Mot de passe"><br>
 
-    <p id="login-error" style="color:red;"></p>
-    <p id="welcome-msg" style="color:green;"></p>
-  </div>
+  <button onclick="login()">Se connecter</button>
+  <button onclick="createAccount()">Créer un compte</button>
 
-  <!-- NAVIGATION -->
-  <nav id="site-nav" style="display:none;">
-    <a href="#" onclick="showSection('photos')">Photos</a>
-    <a href="#" onclick="showSection('actus')">Actualité</a>
-    <a href="#" onclick="showSection('musique')">Musique</a>
-    <button id="logout-btn" onclick="logout()">Se déconnecter</button>
-  </nav>
+  <p id="login-error"></p>
+</div>
 
-  <!-- SECTIONS -->
-  <div id="photos" class="section active">
-    <h2>Photos de Chacounette</h2>
-    <img src="D4050099-3DC6-4F4D-8454-06388CCC0060.jpeg" width="300">
-    <img src="IMG_0038.jpeg" width="300">
-    <img src="IMG_0026.jpeg" width="300">
-    <img src="IMG_0031.jpeg" width="300">
-    <img src="IMG_0037.jpeg" width="300">
-  </div>
+<!-- MENU -->
+<nav id="site-nav">
+  <a onclick="showSection('photos')">Photos</a>
+  <a onclick="showSection('actus')">Actualité</a>
+  <a onclick="showSection('musique')">Musique</a>
+  <button onclick="logout()">Se déconnecter</button>
+</nav>
 
-  <div id="actus" class="section">
-    <h2>Actualité</h2>
-    <p>Vive Chacounette !</p>
-    <!-- Utterances comments -->
-    <script src="https://utteranc.es/client.js"
-      repo="groupe-chacounette/Groupe-Chacounette-comments"
-      issue-term="pathname"
-      theme="github-light"
-      crossorigin="anonymous"
-      async>
-    </script>
-  </div>
+<!-- SECTIONS -->
+<div id="photos" class="section">
+  <h2>Photos de Chacounette</h2>
+  <img src="D4050099-3DC6-4F4D-8454-06388CCC0060.jpeg" width="300">
+  <img src="IMG_0038.jpeg" width="300">
+  <img src="IMG_0026.jpeg" width="300">
+</div>
 
-  <div id="musique" class="section">
-    <h2>Musique de Chacounette</h2>
-    <audio controls>
-      <source src="musique.mp3" type="audio/mpeg">
-    </audio>
-  </div>
+<div id="actus" class="section">
+  <h2>Actualité</h2>
+  <p>Vive Chacounette 🐾</p>
+</div>
 
-  <canvas id="confetti"></canvas>
+<div id="musique" class="section">
+  <h2>Musique de Chacounette</h2>
+  <audio controls>
+    <source src="musique.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
-  <!-- FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-  <script>
-    // 🔑 CONFIGURATION FIREBASE
-    const firebaseConfig = {
-      apiKey: "TA_CLE_API",
-      authDomain: "groupe-chacounette.firebaseapp.com",
-      projectId: "groupe-chacounette",
-      storageBucket: "groupe-chacounette.firebasestorage.app",
-      messagingSenderId: "760695116962",
-      appId: "1:760695116962:web:cbfec4a6777ea64b8bf3fb",
-      measurementId: "G-T0JQ2XR97E"
-    };
-    firebase.initializeApp(firebaseConfig);
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBZR8QC7Sqlge49_-TM-dFpdJPS3kW4fRM",
+    authDomain: "groupe-chacounette.firebaseapp.com",
+    projectId: "groupe-chacounette",
+    storageBucket: "groupe-chacounette.firebasestorage.app",
+    messagingSenderId: "760695116962",
+    appId: "1:760695116962:web:cbfec4a6777ea64b8bf3fb"
+  };
 
-    const loginContainer = document.getElementById("login-container");
-    const siteNav = document.getElementById("site-nav");
-    const welcomeMsg = document.getElementById("welcome-msg");
+  firebase.initializeApp(firebaseConfig);
 
-    // 🟢 Vérifie si utilisateur connecté
-    firebase.auth().onAuthStateChanged(user => {
-      if(user){
-        loginContainer.style.display = "none";
-        siteNav.style.display = "flex";
-        showSection("photos");
-      } else {
-        loginContainer.style.display = "block";
-        siteNav.style.display = "none";
-        welcomeMsg.innerText = "";
-      }
-    });
+  const loginContainer = document.getElementById("login-container");
+  const siteNav = document.getElementById("site-nav");
+  const errorText = document.getElementById("login-error");
 
-    // 🔑 Connexion
-    function login(){
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .catch(err => { document.getElementById("login-error").innerText = err.message; });
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      loginContainer.style.display = "none";
+      siteNav.style.display = "flex";
+      showSection("photos");
+    } else {
+      loginContainer.style.display = "block";
+      siteNav.style.display = "none";
     }
+  });
 
-    // 🔑 Création compte + message + confettis
-    function signup(){
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          welcomeMsg.innerText = "Félicitations ! Vous faites partie du groupe Chacounette, vous êtes maintenant un membre exclusif et vous recevrez le journal du groupe Chacounette !";
-          launchConfetti();
-        })
-        .catch(err => { document.getElementById("login-error").innerText = err.message; });
-    }
+  function login() {
+    const email = emailInput();
+    const password = passwordInput();
 
-    // 🔑 Déconnexion
-    function logout(){
-      firebase.auth().signOut();
-    }
+    firebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(err => showError(err.message));
+  }
 
-    // 🔹 Navigation entre sections
-    function showSection(id){
-      document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-    }
+  function createAccount() {
+    const email = emailInput();
+    const password = passwordInput();
 
-    // 🎉 Confettis simples
-    function launchConfetti(){
-      const canvas = document.getElementById("confetti");
-      const ctx = canvas.getContext("2d");
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      const confettis = [];
-      for(let i=0;i<150;i++){
-        confettis.push({
-          x: Math.random()*canvas.width,
-          y: Math.random()*canvas.height-100,
-          r: Math.random()*6+4,
-          d: Math.random()*20+10,
-          color: `hsl(${Math.random()*360},100%,50%)`,
-          tilt: Math.random()*10-10
-        });
-      }
-      let angle = 0;
-      function draw(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        confettis.forEach(c=>{
-          ctx.beginPath();
-          ctx.moveTo(c.x+c.tilt+angle, c.y);
-          ctx.lineTo(c.x+c.tilt, c.y+c.r);
-          ctx.strokeStyle = c.color;
-          ctx.lineWidth = c.r/2;
-          ctx.stroke();
-        });
-        update();
-      }
-      function update(){
-        angle += 0.02;
-        confettis.forEach(c=>{
-          c.y += 2;
-          if(c.y>canvas.height){ c.y = -10; c.x = Math.random()*canvas.width; }
-        });
-        requestAnimationFrame(draw);
-      }
-      draw();
-      setTimeout(()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); },5000);
-    }
-  </script>
+    firebase.auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        errorText.style.color = "green";
+        errorText.innerText = "Compte créé 🎉";
+      })
+      .catch(err => showError(err.message));
+  }
+
+  function logout() {
+    firebase.auth().signOut();
+  }
+
+  function showSection(id) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
+
+  function emailInput() {
+    return document.getElementById("email").value;
+  }
+
+  function passwordInput() {
+    return document.getElementById("password").value;
+  }
+
+  function showError(msg) {
+    errorText.style.color = "red";
+    errorText.innerText = msg;
+  }
+</script>
+
 </body>
 </html>
