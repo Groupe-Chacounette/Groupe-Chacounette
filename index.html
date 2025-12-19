@@ -64,6 +64,16 @@
       margin: 10px;
       cursor: pointer;
     }
+
+    #confetti {
+      position: fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+      z-index:9999;
+    }
   </style>
 </head>
 
@@ -105,6 +115,7 @@
 <div id="actus" class="section">
   <h2>Actualité</h2>
   <p>Vive Chacounette 🐾</p>
+  <div id="comments-container"></div>
 </div>
 
 <div id="musique" class="section">
@@ -114,13 +125,15 @@
   </audio>
 </div>
 
+<canvas id="confetti"></canvas>
+
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
   const firebaseConfig = {
-    apiKey: "AIzaSyBZR8QC7Sqlge49_-TM-dFpdJPS3kW4fRM",
+    apiKey: "TA_CLE_API", // Masquer sur GitHub ou utiliser un fichier séparé
     authDomain: "groupe-chacounette.firebaseapp.com",
     projectId: "groupe-chacounette",
     storageBucket: "groupe-chacounette.firebasestorage.app",
@@ -133,21 +146,25 @@
   const loginContainer = document.getElementById("login-container");
   const siteNav = document.getElementById("site-nav");
   const errorText = document.getElementById("login-error");
+  const commentsContainer = document.getElementById("comments-container");
 
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       loginContainer.style.display = "none";
       siteNav.style.display = "flex";
       showSection("photos");
+      loadComments();
     } else {
       loginContainer.style.display = "block";
       siteNav.style.display = "none";
+      errorText.innerText = "";
+      commentsContainer.innerHTML = "";
     }
   });
 
   function login() {
-    const email = emailInput();
-    const password = passwordInput();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     firebase.auth()
       .signInWithEmailAndPassword(email, password)
@@ -155,14 +172,15 @@
   }
 
   function createAccount() {
-    const email = emailInput();
-    const password = passwordInput();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     firebase.auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        errorText.style.color = "green";
-        errorText.innerText = "Compte créé 🎉";
+        showWelcomeMessage();
+        launchConfetti();
+        loadComments();
       })
       .catch(err => showError(err.message));
   }
@@ -176,17 +194,68 @@
     document.getElementById(id).classList.add("active");
   }
 
-  function emailInput() {
-    return document.getElementById("email").value;
-  }
-
-  function passwordInput() {
-    return document.getElementById("password").value;
-  }
-
   function showError(msg) {
     errorText.style.color = "red";
     errorText.innerText = msg;
+  }
+
+  function showWelcomeMessage() {
+    errorText.style.color = "green";
+    errorText.innerText = "Félicitations ! Vous faites partie du groupe Chacounette, vous êtes maintenant un membre exclusif et vous recevrez le journal du groupe Chacounette !";
+  }
+
+  function launchConfetti() {
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const confettis = [];
+    for (let i=0;i<150;i++){
+      confettis.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height-100,
+        r: Math.random()*6+4,
+        d: Math.random()*20+10,
+        color: `hsl(${Math.random()*360},100%,50%)`,
+        tilt: Math.random()*10-10
+      });
+    }
+    let angle = 0;
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      confettis.forEach(c=>{
+        ctx.beginPath();
+        ctx.moveTo(c.x+c.tilt+angle, c.y);
+        ctx.lineTo(c.x+c.tilt, c.y+c.r);
+        ctx.strokeStyle = c.color;
+        ctx.lineWidth = c.r/2;
+        ctx.stroke();
+      });
+      update();
+    }
+    function update(){
+      angle += 0.02;
+      confettis.forEach(c=>{
+        c.y += 2;
+        if(c.y>canvas.height){ c.y=-10; c.x=Math.random()*canvas.width; }
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+    setTimeout(()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); },5000);
+  }
+
+  function loadComments() {
+    if (document.getElementById("utterances-script")) return; // évite double insertion
+    const script = document.createElement("script");
+    script.id = "utterances-script";
+    script.src = "https://utteranc.es/client.js";
+    script.setAttribute("repo", "groupe-chacounette/Groupe-Chacounette-comments");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+    commentsContainer.appendChild(script);
   }
 </script>
 
