@@ -4,123 +4,191 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Groupe Chacounette</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f7f7f7; }
-    header { background: #333; color: white; padding: 20px; text-align: center; }
-    nav { display: flex; justify-content: center; background: #444; }
-    nav a { color: white; padding: 14px 20px; text-decoration: none; display: block; }
-    nav a:hover { background: #666; }
-    .section { display: none; padding: 20px; }
-    .active { display: block; }
 
-    #login-container { text-align:center; padding:50px; }
-    #login-container input { padding:10px; margin:5px; width:200px; }
-    #login-container button { padding:10px 20px; margin:10px; }
-    #logout-btn { padding:10px 20px; margin:10px; cursor:pointer; }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f7f7f7;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      display: none;
+      justify-content: center;
+      background: #444;
+    }
+
+    nav a, nav button {
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    nav a:hover, nav button:hover {
+      background: #666;
+    }
+
+    .section {
+      display: none;
+      padding: 20px;
+    }
+
+    .active {
+      display: block;
+    }
+
+    #login-container {
+      text-align: center;
+      padding: 50px;
+    }
+
+    #login-container input {
+      padding: 10px;
+      margin: 5px;
+      width: 220px;
+    }
+
+    #login-container button {
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+    }
   </style>
 </head>
+
 <body>
-  <header><h1>Groupe Chacounette</h1></header>
 
-  <!-- LOGIN -->
-  <div id="login-container">
-    <h2>Connectez-vous</h2>
+<header>
+  <h1>Groupe Chacounette</h1>
+</header>
 
-    <input type="email" id="email" placeholder="Email"><br>
-    <input type="password" id="password" placeholder="Mot de passe"><br>
+<!-- CONNEXION / CRÉATION -->
+<div id="login-container">
+  <h2>Connexion</h2>
 
-    <button onclick="login()">Se connecter</button>
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Mot de passe"><br>
 
-    <p id="login-error" style="color:red;"></p>
-  </div>
+  <button onclick="login()">Se connecter</button>
+  <button onclick="createAccount()">Créer un compte</button>
 
-  <!-- NAVIGATION -->
-  <nav id="site-nav" style="display:none;">
-    <a href="#" onclick="showSection('photos')">Photos</a>
-    <a href="#" onclick="showSection('actus')">Actualité</a>
-    <a href="#" onclick="showSection('musique')">Musique</a>
-    <button id="logout-btn" onclick="logout()">Se déconnecter</button>
-  </nav>
+  <p id="login-error"></p>
+</div>
 
-  <!-- SECTIONS -->
-  <div id="photos" class="section active">
-    <h2>Photos de Chacounette</h2>
-    <img src="D4050099-3DC6-4F4D-8454-06388CCC0060.jpeg" width="300">
-    <img src="IMG_0038.jpeg" width="300">
-    <img src="IMG_0026.jpeg" width="300">
-    <img src="IMG_0031.jpeg" width="300">
-    <img src="IMG_0037.jpeg" width="300">
-  </div>
+<!-- MENU -->
+<nav id="site-nav">
+  <a onclick="showSection('photos')">Photos</a>
+  <a onclick="showSection('actus')">Actualité</a>
+  <a onclick="showSection('musique')">Musique</a>
+  <button onclick="logout()">Se déconnecter</button>
+</nav>
 
-  <div id="actus" class="section">
-    <h2>Actualité</h2>
-    <p>Vive Chacounette</p>
-    <script src="https://utteranc.es/client.js"
-      repo="groupe-chacounette/Groupe-Chacounette-comments"
-      issue-term="pathname"
-      theme="github-light"
-      crossorigin="anonymous"
-      async>
-    </script>
-  </div>
+<!-- SECTIONS -->
+<div id="photos" class="section">
+  <h2>Photos de Chacounette</h2>
+  <img src="D4050099-3DC6-4F4D-8454-06388CCC0060.jpeg" width="300">
+  <img src="IMG_0038.jpeg" width="300">
+  <img src="IMG_0026.jpeg" width="300">
+</div>
 
-  <div id="musique" class="section">
-    <h2>Musique de Chacounette</h2>
-    <audio controls>
-      <source src="musique.mp3" type="audio/mpeg">
-    </audio>
-  </div>
+<div id="actus" class="section">
+  <h2>Actualité</h2>
+  <p>Vive Chacounette 🐾</p>
+</div>
 
-  <!-- FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<div id="musique" class="section">
+  <h2>Musique de Chacounette</h2>
+  <audio controls>
+    <source src="musique.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBZR8QC7Sqlge49_-TM-dFpdJPS3kW4fRM",
-      authDomain: "groupe-chacounette.firebaseapp.com",
-      projectId: "groupe-chacounette",
-      storageBucket: "groupe-chacounette.firebasestorage.app",
-      messagingSenderId: "760695116962",
-      appId: "1:760695116962:web:cbfec4a6777ea64b8bf3fb",
-      measurementId: "G-T0JQ2XR97E"
-    };
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-    firebase.initializeApp(firebaseConfig);
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBZR8QC7Sqlge49_-TM-dFpdJPS3kW4fRM",
+    authDomain: "groupe-chacounette.firebaseapp.com",
+    projectId: "groupe-chacounette",
+    storageBucket: "groupe-chacounette.firebasestorage.app",
+    messagingSenderId: "760695116962",
+    appId: "1:760695116962:web:cbfec4a6777ea64b8bf3fb"
+  };
 
-    const loginContainer = document.getElementById("login-container");
-    const siteNav = document.getElementById("site-nav");
+  firebase.initializeApp(firebaseConfig);
 
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        loginContainer.style.display = "none";
-        siteNav.style.display = "flex";
-        showSection("photos");
-      } else {
-        loginContainer.style.display = "block";
-        siteNav.style.display = "none";
-      }
-    });
+  const loginContainer = document.getElementById("login-container");
+  const siteNav = document.getElementById("site-nav");
+  const errorText = document.getElementById("login-error");
 
-    function login() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      firebase.auth()
-        .signInWithEmailAndPassword(email, password)
-        .catch(err => {
-          document.getElementById("login-error").innerText = err.message;
-        });
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      loginContainer.style.display = "none";
+      siteNav.style.display = "flex";
+      showSection("photos");
+    } else {
+      loginContainer.style.display = "block";
+      siteNav.style.display = "none";
     }
+  });
 
-    function logout() {
-      firebase.auth().signOut();
-    }
+  function login() {
+    const email = emailInput();
+    const password = passwordInput();
 
-    function showSection(id) {
-      document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-    }
-  </script>
+    firebase.auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(err => showError(err.message));
+  }
+
+  function createAccount() {
+    const email = emailInput();
+    const password = passwordInput();
+
+    firebase.auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        errorText.style.color = "green";
+        errorText.innerText = "Compte créé 🎉";
+      })
+      .catch(err => showError(err.message));
+  }
+
+  function logout() {
+    firebase.auth().signOut();
+  }
+
+  function showSection(id) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
+
+  function emailInput() {
+    return document.getElementById("email").value;
+  }
+
+  function passwordInput() {
+    return document.getElementById("password").value;
+  }
+
+  function showError(msg) {
+    errorText.style.color = "red";
+    errorText.innerText = msg;
+  }
+</script>
+
 </body>
 </html>
